@@ -1,4 +1,4 @@
-# // GITHUB ACTIONS CI/CD PIPELINE
+# // GITHUB ACTIONS CI/CD PIPELINE - VST3 BUILDER
 name: Build AuraPitch Pro VST3
 
 on:
@@ -27,10 +27,18 @@ jobs:
         run: |
           cmake --build build --config Release --parallel 4
 
-      - name: Upload Compiled VST3 Plugin
+      - name: Find and Prepare VST3 Artefacts
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse -Filter "*.vst3" | Select-Object FullName
+          Get-ChildItem -Recurse -Filter "*.exe" | Select-Object FullName
+
+      - name: Upload Compiled VST3 Plugin Artifact
         uses: actions/upload-artifact@v4
         with:
           name: AuraPitchPro-Windows-VST3
           path: |
-            build/AuraPitchPro_artefacts/Release/VST3/AuraPitch Pro.vst3
-            build/AuraPitchPro_artefacts/Release/Standalone/AuraPitch Pro.exe
+            **/Release/VST3/*.vst3
+            **/Release/Standalone/*.exe
+            **/*.vst3
+            **/*.exe
