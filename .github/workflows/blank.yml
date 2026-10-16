@@ -1,0 +1,36 @@
+# // GITHUB ACTIONS CI/CD PIPELINE
+name: Build AuraPitch Pro VST3
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-windows-vst3:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC & CMake Environment
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Compile VST3 & Standalone
+        run: |
+          cmake --build build --config Release --parallel 4
+
+      - name: Upload Compiled VST3 Plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: AuraPitchPro-Windows-VST3
+          path: |
+            build/AuraPitchPro_artefacts/Release/VST3/AuraPitch Pro.vst3
+            build/AuraPitchPro_artefacts/Release/Standalone/AuraPitch Pro.exe
