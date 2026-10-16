@@ -32,11 +32,11 @@ juce_generate_juce_header(AuraPitchPro)
 
 target_sources(AuraPitchPro
     PRIVATE
-        Source/PluginProcessor.cpp
-        Source/PluginEditor.cpp
-        Source/NaturalPitchEngine.h
-        Source/PluginProcessor.h
-        Source/PluginEditor.h
+        PluginProcessor.cpp
+        PluginEditor.cpp
+        NaturalPitchEngine.h
+        PluginProcessor.h
+        PluginEditor.h
 )
 
 target_compile_definitions(AuraPitchPro
